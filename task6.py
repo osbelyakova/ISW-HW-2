@@ -89,6 +89,6 @@ for i in range(1, N + 1):
         visited_arr[j] = 0
     new_way = times_graph.search_way(visited_arr, X, i)
     #print("Расстояние между {} и {}: {}".format(X, i, new_way))
-    if length < new_way:
+    if (length < new_way) and (i != X):
         length = new_way
 print("The answer: {}".format(length))
