@@ -3,19 +3,20 @@
 def get_graph(edge_num=0):
     """Make a matrix with weight of the edge on intersection"""
     graph_matrix = []
-    print("Insert the edges with weight: ")
-    first_top = input("first top: ")
-    while first_top != '':
-        first_top = int(first_top)
-        second_top = input("second top: ")
-        while second_top == '':
-            second_top = input()
-        second_top = int(second_top)
-        edge_weight = input("weight: ")
-        while edge_weight == '':
-            edge_weight = input()
-        edge_weight = int(edge_weight)
-
+    str_with_tops = input()
+    str_with_tops = str_with_tops.replace(' ','')
+    str_with_tops = str_with_tops.replace(',',' ')
+    str_with_tops = str_with_tops.replace('[','')
+    str_with_tops = str_with_tops.replace(']','')
+    list_with_tops = str_with_tops.split(' ')
+    k = 0
+    while k < len(list_with_tops) - 2:
+        first_top = int(list_with_tops[k])
+        k += 1
+        second_top = int(list_with_tops[k])
+        k += 1
+        edge_weight = int(list_with_tops[k])
+        k += 1
         if edge_num == 0:
             for i in range(edge_num, max(first_top, second_top) + 1):
                 graph_matrix.append(0)
@@ -40,9 +41,6 @@ def get_graph(edge_num=0):
             edge_num = max(first_top, second_top)
         graph_matrix[first_top][second_top] = edge_weight
         graph_matrix[second_top][first_top] = edge_weight
-        print('')
-        first_top = input("first top (or 'enter'): ")
-    print('')
     return graph_matrix
 
 class Graph:
@@ -85,8 +83,9 @@ class Graph:
 
 new_graph = Graph()
 #new_graph.print_graph()
-print("Insert nodeStart and nodeEnd: ")
+print("nodeStart: ")
 node_start = int(input())
+print("nodeEnd: ")
 node_end = int(input())
 print("best way: ")
 arr = [None] * (len(new_graph.graph_matrix) + 1)
