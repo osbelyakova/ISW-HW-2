@@ -3,18 +3,20 @@
 def get_graph(edge_num=0):
     """Make a matrix with weight of the edge on intersection"""
     graph_matrix = []
-    print("times = ")
-    first_top = input("first top: ")
-    while first_top != '':
-        first_top = int(first_top)
-        second_top = input("second top: ")
-        while second_top == '':
-            second_top = input()
-        second_top = int(second_top)
-        edge_weight = input("weight: ")
-        while edge_weight == '':
-            edge_weight = input()
-        edge_weight = int(edge_weight)
+    str_with_tops = input("times = ")
+    str_with_tops = str_with_tops.replace(' ','')
+    str_with_tops = str_with_tops.replace(',',' ')
+    str_with_tops = str_with_tops.replace('[','')
+    str_with_tops = str_with_tops.replace(']','')
+    list_with_tops = str_with_tops.split(' ')
+    k = 0
+    while k < len(list_with_tops) - 2:
+        first_top = int(list_with_tops[k])
+        k += 1
+        second_top = int(list_with_tops[k])
+        k += 1
+        edge_weight = int(list_with_tops[k])
+        k += 1
         if edge_num == 0:
             for i in range(edge_num, max(first_top, second_top) + 1):
                 graph_matrix.append(0)
@@ -38,8 +40,6 @@ def get_graph(edge_num=0):
                     graph_matrix[i].append(0)
             edge_num = max(first_top, second_top)
         graph_matrix[first_top][second_top] = edge_weight
-        print("")
-        first_top = input("first top (or 'enter'): ")
     return graph_matrix
 
 class Graph:
@@ -78,17 +78,26 @@ class Graph:
 
 times_graph = Graph()
 N = int(input("N = "))
-#try_graph.print_graph()
-X = int(input("X = "))
-visited_arr = []
-length = 0
-for i in range(0, len(times_graph.graph_matrix)):
-    visited_arr.append(0)
-for i in range(1, N + 1):
-    for j in range(0, len(times_graph.graph_matrix)):
-        visited_arr[j] = 0
-    new_way = times_graph.search_way(visited_arr, X, i)
-    #print("Расстояние между {} и {}: {}".format(X, i, new_way))
-    if (length < new_way) and (i != X):
-        length = new_way
-print("The answer: {}".format(length))
+if N > 100 or N < 1:
+    print("Error")
+else:
+    #try_graph.print_graph()
+    X = int(input("X = "))
+    if X > N or X < 1:
+        print("Error")
+    else:
+        visited_arr = []
+        length = -1
+        for i in range(0, len(times_graph.graph_matrix)):
+            visited_arr.append(0)
+        for i in range(1, N + 1):
+            for j in range(0, len(times_graph.graph_matrix)):
+                visited_arr[j] = 0
+            new_way = times_graph.search_way(visited_arr, X, i)
+            #print("Р Р°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ {} Рё {}: {}".format(X, i, new_way))
+            if new_way == -1:
+                length = -1
+                break
+            if (length < new_way) and (X != i):
+                length = new_way
+        print("The answer: {}".format(length))
