@@ -3,14 +3,20 @@
 def get_graph(edge_num=0):
     """Make a matrix with 1 on intersection"""
     graph_matrix = []
-    print("Insert the edges: ")
-    first_top = input("first top: ")
-    while first_top != '':
-        first_top = int(first_top)
-        second_top = input("second top: ")
-        while second_top == '':
-            second_top = input()
-        second_top = int(second_top)
+    str_with_tops = input()
+    str_with_tops = str_with_tops.replace(' ','')
+    str_with_tops = str_with_tops.replace(',',' ')
+    str_with_tops = str_with_tops.replace('[','')
+    str_with_tops = str_with_tops.replace(']','')
+    list_with_tops = str_with_tops.split(' ')
+    k = 0
+    while k < len(list_with_tops) - 1:
+        first_top = int(list_with_tops[k])
+        k += 1
+        second_top = int(list_with_tops[k])
+        k += 1
+        if (first_top == second_top):
+            continue
         if edge_num == 0:
             for i in range(edge_num, max(first_top, second_top) + 1):
                 graph_matrix.append(0)
@@ -35,8 +41,6 @@ def get_graph(edge_num=0):
             edge_num = max(first_top, second_top)
         graph_matrix[first_top][second_top] = 1
         graph_matrix[second_top][first_top] = 1
-        print("")
-        first_top = input("first top (or 'enter'): ")
     return graph_matrix
 
 class Graph:
@@ -53,10 +57,12 @@ class Graph:
             u = top_queue[i]
             i += 1
             for j in range(0, len(self.graph_matrix)):
-                if (self.graph_matrix[u][j] != 0) and (visited_arr[j] == None):
+                if (self.graph_matrix[u][j] != 0) and (visited_arr[j] is None):
                     visited_arr[j] = visited_arr[u] + 1
                     top_queue.append(j)
-        print(top_queue)        
+        for i in range(0, len(top_queue)):
+            print(top_queue[i])
+        return 0
 
     def dfs(self, visited_arr, i=0):
         """DFS"""
@@ -65,7 +71,7 @@ class Graph:
         if i == len(self.graph_matrix) - 1 or sum(self.graph_matrix[i]) == 0:
             return 0
         for j in range(0, len(self.graph_matrix)):
-            if (self.graph_matrix[i][j] != 0) and (visited_arr[j] == 0):
+            if (self.graph_matrix[i][j] != 0) and (visited_arr[j] is None):
                 self.dfs(visited_arr, j)
                 print(i)
         return 1
@@ -82,6 +88,6 @@ try_graph.bfs(0)
 print("")
 visited_arr = []
 for i in range(0, len(try_graph.graph_matrix)):
-    visited_arr.append(0)
+    visited_arr.append(None)
 print("DFS: ")
 try_graph.dfs(visited_arr, 0)
